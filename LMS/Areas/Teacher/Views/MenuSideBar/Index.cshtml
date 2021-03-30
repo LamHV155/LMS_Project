@@ -1,0 +1,87 @@
+﻿@model DAL.EF.SEMESTER
+
+
+<div class="sidebar-header">
+    <img src="~/Content/Common/utex.png" alt="HCMUTE" width="100px" class="ml-4"/>
+</div>
+
+<ul class="list-unstyled components">
+    <p>@Model.TITLE </p>
+    <li>
+        <a href="#subjectSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Môn học</a>
+        <ul class="collapse list-unstyled" id="subjectSubmenu">
+            @{ Html.RenderAction("Subjects", "MenuSideBar", new { area = "Teacher" });}
+        </ul>
+    </li>
+    <li>
+        <a href="#asessmentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Đánh giá</a>
+        <ul class="collapse list-unstyled" id="asessmentSubmenu">
+            @{ Html.RenderAction("SubjectAssessments", "MenuSideBar", new { area = "Teacher" });}
+        </ul>
+    </li>
+    <li>
+        <a href="/Profile/Index">Thông tin cá nhân</a>
+    </li>
+    <li>
+        <a id="logout">Đăng xuất</a>
+    </li>
+</ul>
+
+<div class="modal d-none position-fixed" id="modal" style="background-color: rgba(0, 0, 0, .5);">
+    <div class="modal-content m-auto d-flex" style="width:35%; top:150px">
+        <div class="p-4 d-flex align-items-center flex-column">
+            <div><h5 class="text-dark mb-5 mt-3">Bạn muốn thoát ? </h5></div>
+            <div class="d-flex flex-row">
+                <button class="btn btn-light mr-3" id="logoutBtnNo">Không</button>
+                <button class="btn btn-primary" id="logoutBtnOk">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(
+        ModalToggleLogout()
+    )
+
+    function ModalToggleLogout() {
+        $('#logout').click(function () {
+            $('#modal').toggleClass('d-none d-block');
+        });
+
+        $(window).on('click', function (e) {
+            if ($(e.target).is('#modal')) {
+                $('#modal').toggleClass('d-none d-block');
+            }
+
+            $('#logoutBtnNo').on('click', function () {
+                $('#modal').toggleClass('d-none d-block');
+            })
+
+            $('#logoutBtnOk').on('click', function () {
+                $.ajax({
+                    url: "/Profile/Logout",
+                    type: 'post',
+                    data: {},
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status) {
+                            window.location.href = '/Home/Index'
+                            return;
+                        }
+                        else {
+                            window.location.href = '/Home/Index'
+                            return;
+                        }
+                    }
+                })
+                
+
+            })
+        });
+    }
+
+
+
+
+</script>

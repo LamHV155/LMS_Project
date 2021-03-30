@@ -1,0 +1,82 @@
+﻿@model DAL.EF.COURSE
+@{
+    ViewBag.Title = "StudentProcess";
+    Layout = "~/Areas/Teacher/Views/Shared/_BlankTeacherLayout.cshtml";
+}
+
+<div class="pr-4">
+    <div style="background-color:#465c9e;" class="pl-3 pt-2 pb-2">
+        <h4 class="text-light mb-0">Quá trình học tập</h4>
+        <h6 class="text-light mb-0 pl-2">@Model.NAME - @Model.C_USER.ToList()[0].LAST_NAME @Model.C_USER.ToList()[0].MIDDLE_NAME @Model.C_USER.ToList()[0].FIRST_NAME</h6>
+    </div>
+    <div>
+        @if (Model.TOPICs != null)
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Sự kiện</th>
+                        <th scope="col">Bài nộp</th>
+                        <th scope="col">Điểm</th>
+                        <th scope="col">Nhận xét</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var topic in Model.TOPICs)
+                    {
+                        if (topic.EVENTs == null) { continue; }
+                        foreach (var ev in topic.EVENTs)
+                        {
+                            <tr>
+                                <td><a href="/Teacher/Assessment/Detail?eventID=@ev.ID&courseID=@Model.ID" class="text-primary" aria-label="Đến trang nộp bài">@ev.TITLE</a></td>
+                                @if (ev.SUBMITs == null)
+                            {
+                                    <td>Chưa nộp</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                }
+                                else
+                                {
+                                    <td><a href="@ev.SUBMITs.ToList()[0].LINK " class="text-primary" aria-label="Click để tải về" target="_blank">file bài nộp</a></td>
+                                    if (ev.SUBMITs.ToList()[0].ASSESSMENT == null)
+                                    {
+                                        <td>Chưa chấm</td>
+                                        <td>Chưa phê</td>
+
+                                    }
+                                    else
+                                    {
+                                        if (ev.SUBMITs.ToList()[0].ASSESSMENT.SCORE == null)
+                                        {
+                                            <td>Chưa chấm</td>
+                                        }
+                                        else
+                    {
+                                            <td>@ev.SUBMITs.ToList()[0].ASSESSMENT.SCORE</td>
+                                        }
+                    if (ev.SUBMITs.ToList()[0].ASSESSMENT.COMMENT == null)
+                    {
+                                            <td>Chưa phê</td>
+                                        }
+                    else
+                    {
+                                            <td>@ev.SUBMITs.ToList()[0].ASSESSMENT.COMMENT</td>
+                                        }
+                                    }
+                                }
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h5 style="color:#808080" class="mt-3 ml-3">Không có sự kiện để hiển thị !</h5>
+        }
+
+    </div>
+</div>
+

@@ -1,0 +1,124 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>LMS</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link href="~/Content/Teacher/style.css" rel="stylesheet" />
+    <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/9dbbecbb49.js" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="~/Scripts/jquery.datetimepicker.full.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="wrapper">
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+                <div>@{Html.RenderAction("Index", "MenuSideBar", new { area = "Teacher" });}</div>
+            </nav>
+
+            <!-- Page Content  -->
+            <div id="page-content">
+                <!--navbar-->
+                <div>
+                    <nav class="navbar navbar-light bg-light mb-4">
+                        <div class="container-fluid">
+
+                            <button type="button" class="btn" style="background-color:#7386D5;" id="sidebarCollapse">
+                                <i class="fas fa-align-left text-light"></i>
+                            </button>
+                            <div>
+                                <ul class="nav navbar-nav ml-auto">
+                                    <li>
+                                        <a class="nav-link" href="/Profile/Index" style="display:flex; flex-direction: row" id="zoomOut">
+                                            <span class="mr-2">@Session["UserName"]</span>
+                                            <i class="fas fa-user-circle fa-2x"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div style="min-height:100vh; display: flex; flex-direction:row; align-items: stretch;">
+                    <!--Content-->
+                    <div style="flex-grow:1">
+                        @RenderBody()
+                    </div>
+                    <!--right side bar-->
+                    <div id="rightbar">
+                        <div id="clock"></div>
+                        @RenderSection("listTopicHTML", false)
+                        @RenderSection("listStudentInCourse", false)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--Footer-->
+        <div id="footer">
+           @RenderPage("~/Views/Shared/_Footer.cshtml", new { area = ""})
+        </div>
+    </div>
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    @RenderSection("script_subject", false)
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+
+            clock()
+            activeLinkControls()
+        });
+
+
+
+        function activeLinkControls() {
+            $("#sidebar ul li a").click(function () {
+                $('#sidebar ul li').removeClass('active')
+                $(this).closest('li').addClass('active')
+            })
+        }
+
+        function clock() {
+            clockUpdate()
+            setInterval(clockUpdate, 1000)
+        }
+        function clockUpdate() {
+            let date = new Date()
+            let h = addZero(Hour24th(date.getHours()))
+            let m = addZero(date.getMinutes())
+            let s = addZero(date.getSeconds())
+            $("#clock").text('Clock: ' + h + ':' + m + ':' + s)
+        }
+        function addZero(x) {
+            if (x < 10) return x = '0' + x;
+            else return x
+        }
+        function Hour24th(x) {
+            if (x >= 24) return x = x - 24
+            else return x
+        }
+    </script>
+    @RenderSection("script_functionOfSubject", false)
+    @RenderSection("script_editProfile", false)
+</body>
+
+</html>
+

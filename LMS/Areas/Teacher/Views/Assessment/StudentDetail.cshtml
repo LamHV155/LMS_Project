@@ -1,0 +1,189 @@
+﻿@model LMS.Areas.Teacher.Data.AssessmentStudentDetailView
+@{
+    ViewBag.Title = "StudentDetail";
+    Layout = "~/Areas/Teacher/Views/Shared/_BlankTeacherLayout.cshtml";
+}
+
+<p class="text-primary d-inline-block">@Model.eVent.TOPIC.COURSE.NAME > </p>
+<p class="text-primary d-inline-block">@Model.eVent.TOPIC.TITLE > </p>
+<p class="text-primary d-inline-block">@Model.eVent.TITLE</p>
+
+    @{ var submit = @Model.student.SUBMITs.FirstOrDefault();}
+    @{var submitID = "null";}
+    @if(submit != null) { submitID = submit.ID; }
+
+<div class="mr-4">
+    <table class="table table-hover" data-submitid="@submitID">
+        <tbody>
+            <tr class="bg-primary text-light">
+                <td><h4>@Model.student.LAST_NAME @Model.student.MIDDLE_NAME @Model.student.FIRST_NAME</h4></td>
+                <td>@Model.student.ID</td>
+            </tr>
+            <tr>
+                <th scope="row">Bài nộp</th>
+
+                @if (submit != null)
+                {
+                    <td><a href="@submit.LINK" class="btn text-primary">link bài nộp</a></td>
+}
+                else
+                {
+                    <td style="color:#CCC">Chưa nộp</td>
+}
+            </tr>
+            <tr>
+                <th scope="row">Thời gian nộp</th>
+                @if (submit != null)
+                {
+                    <td>@submit.TIME</td>
+}
+                else
+                {
+                    <td style="color:#CCC">Chưa nộp</td>
+}
+            </tr>
+
+            <tr id="score" class="msg">
+                <th scope="row">Điểm</th>
+                @if (submit != null && submit.ASSESSMENT.SCORE >= 50)
+                {
+                    <td class="sc text-success">@submit.ASSESSMENT.SCORE</td>
+ }
+                else if (submit != null && submit.ASSESSMENT.SCORE < 50)
+                {
+                    <td class="sc text-danger">@submit.ASSESSMENT.SCORE</td>
+}
+                else
+                {
+                    <td style="color:#CCC" class="sc">Chưa chấm</td>
+}
+                <td><input rows="5" cols="50" id="inp-score" type="text" class="form-control d-none" /></td>
+            </tr>
+            <tr id="cmt" class="msg">
+                <th scope="row">Lời phê</th>
+                @if (submit != null && submit.ASSESSMENT.COMMENT != null)
+                {
+                    <td class="value">@submit.ASSESSMENT.COMMENT</td>
+ }
+                else
+                {
+                    <td class="value" style="color:#CCC">Chưa cho lời phê</td>
+}
+                <td><input id="inp-cmt" type="text" class="form-control d-none" /></td>
+            </tr>
+        </tbody>
+    </table>
+    @if (submit != null)
+    {<div id="showMsg" class="position-absolute text-light text-center p-0 pl-1 pr-1 bg-warning d-none">Click vào để thêm hoặc sửa</div>}
+    else
+    { <div id="showMsg" class="position-absolute text-light text-center p-0 pl-1 pr-1 bg-warning d-none">Không thể cho điểm hoặc đánh giá khi chưa có bài nộp !</div>}
+</div>
+<div></div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showMsgScore()
+        clickToshowTextboxScore()
+        updateScore()
+        clickToshowTextboxCMT()
+        updateCMT()
+    });
+
+    function showMsgScore() {
+        $('table .msg').mousemove(function (e) {
+            $('#showMsg').removeClass('d-none');
+            $('#showMsg').css('top', (e.clientY + 10) + 'px').css('left', (e.clientX + 10) + 'px');
+        }).mouseout(function () {
+            $('#showMsg').addClass('d-none');
+        });
+    }
+
+    function clickToshowTextboxScore() {
+        $('#score').on('click', function () {
+            if ($('div table.table').data('submitid') != null) {
+                $('#score td.sc').toggleClass('d-none')
+                $('#inp-score').toggleClass('d-none')
+                $('#inp-score').focus()
+            }
+        })
+    }
+
+    function clickToshowTextboxCMT() {
+        $('#cmt').on('click', function () {
+            if ($('div table.table').data('submitid') != null) {
+                $('#cmt td.value').toggleClass('d-none')
+                $('#inp-cmt').toggleClass('d-none')
+                $('#inp-cmt').focus()
+            }
+        })
+    }
+
+    function updateScore() {
+        $('#inp-score').keypress(function (e) {
+            if (e.keyCode == 13) {
+                if (parseInt($(this).val()) >= 0 && parseInt($(this).val()) <= 100) {
+                    let score = $(this).val()
+                    let cmt = $('#cmt .value').text()
+                    let sID = $('div table.table').data('submitid')
+                    $.ajax({
+                        url: '/Teacher/Assessment/PostScore',
+                        type: 'POST',
+                        data: { score: score, comment: cmt, submitID : sID},
+                        dataType: 'json',
+                        async: false,
+                        success: function (response) {
+                            if (response.success) {
+                                $('#inp-score').toggleClass('d-none')
+                                if (score < 50) { $('#score td.sc').text(score).toggleClass('d-none').addClass('text-danger').removeClass(' text-success') }
+                                else { $('#score td.sc').text(score).toggleClass('d-none').addClass('text-success').removeClass('text-danger') }
+                                return;
+                            }
+                            else {
+                                alert('Đã xảy ra lỗi !')
+                                return;
+                            }
+                        }
+                    })
+                }
+                else {
+                    alert('Chỉ nhập số và nằm trong khoảng 0 - 100 !')
+                }
+            }
+        })
+    }
+
+    function updateCMT() {
+        $('#inp-cmt').keypress(function (e) {
+            if (e.keyCode == 13) {
+                if ($(this).val().length <= 200) {
+                    let score = (parseInt($('#score td.sc').text()) >= 0 && parseInt($('#score td.sc').text()) <= 100) ? parseInt($('#score td.sc').text()) : 0;
+                    let cmt = $(this).val()
+                    let sID = $('div table.table').data('submitid')
+                    $.ajax({
+                        url: '/Teacher/Assessment/PostScore',
+                        type: 'POST',
+                        data: { score: score, comment: cmt, submitID: sID },
+                        dataType: 'json',
+                        async: false,
+                        success: function (response) {
+                            if (response.success) {
+                                $('#inp-cmt').toggleClass('d-none')
+                                $('#cmt td.value').text(cmt).toggleClass('d-none')
+                                return;
+                            }
+                            else {
+                                alert('Đã xảy ra lỗi !')
+                                return;
+                            }
+                        }
+                    })
+                }
+                else {
+                    alert('Chỉ nhập số và nằm trong khoảng 0 - 100 !')
+                }
+            }
+        })
+    }
+</script>
+

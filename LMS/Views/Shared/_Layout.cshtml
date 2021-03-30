@@ -1,0 +1,194 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:site_name" content="" />
+    <meta property="og:description" content="" />
+
+    <title>Trang Chủ</title>
+
+    <script src="~/Scripts/Common/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="~/Content/Common/css/style.css" media="all" />
+    <link rel="stylesheet" href="~/Content/Common/css/responsive.css" media="all" />
+
+</head>
+
+<body>
+    <header id="header-home">
+        <div class="all">
+            <div class="logo">
+                <div class="img">
+                    <a class="sidebar-brand d-flex align-items-center justify-content-center"
+                       href="#">
+                        <div class="sidebar-brand-icon rotate-n-15">
+                            <i class="fas fa-laugh-wink"></i>
+                        </div>
+                        <div class="sidebar-brand-text mx-3 pt-3 text-primary"  style="font-weight:600; font-size:1.4rem;">HNVT<sup class="text-danger">2</sup></div>
+                    </a>
+                </div>
+            </div>
+            <div class="hd-right">
+                <div class="nav-wrap pt-2">
+                    <div class="nav-overlay"></div>
+                    <ul class="nav-ul">
+                        <li class="current-menu-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="http://hcmute.edu.vn/">Sư Phạm Kỹ Thuật</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button id="login" class="btn btn-outline-success" style="font-size:1rem; font-weight:500">Đăng nhập</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pintag">
+        @RenderBody()
+    </main>
+    <!-- Layout footer -->
+    <footer id="footer">
+    @RenderPage("_Footer.cshtml")
+    </footer>
+
+    <!--Login-->
+
+    <div class="modal d-none position-fixed" id="modal" style="background-color: rgba(0, 0, 0, .5);">
+        <div class="modal-content m-auto d-flex" style="width:35%; top:150px">
+            <div id="err_login"></div>
+            <form action="/Home/Login" method="post" id="frm-login">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div id="login-here" class="d-flex flex-column">
+                        <div class="d-flex justify-content-center pb-2">
+                            <img src="~/Content/Common/utex.png" alt="ute" style="width:100px" />
+                        </div>
+                        <div>
+                            <div><label for="email">Email</label></div>
+                            <div>
+                                <input type="email" id="email" class="form-control col-lg-10 m-auto" />
+                            </div>
+                            <div class="mb-1"></div>
+                            <div id="err_mail"></div>
+                            <div><label for="password">Password</label></div>
+                            <div>
+                                <input type="password" id="password" class="form-control col-lg-10 m-auto" />
+                            </div>
+                            <div class="mb-1"></div>
+                            <div id="err_password"></div>
+                        </div>
+                        
+                        <br />
+                        <a href="/Home/QuenMatKhau" class="text-danger d-inline-block">Quên mật khẩu</a>
+                        <div class="text-center"><button type="submit" class="btn btn-primary">Đăng nhập</button></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>   
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/Common/js/typed.js"></script>
+    <script src="~/Scripts/Common/js/master.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var typed2 = new Typed("#typed-js", {
+                strings: ["UTEx ONLINE TRAINING SYSTEM"],
+                typeSpeed: 50,
+                backSpeed: 50,
+                backDelay: 2000,
+                startDelay: 200,
+                loop: true,
+            });
+
+            login()
+
+            ModalToggle()
+        });
+
+        function ModalToggle() {
+            $('#login').click(function () {
+                $('#modal').toggleClass('d-none d-block');
+            });
+
+            $(window).on('click', function (e) {
+                if ($(e.target).is('#modal')) {
+                    $('#modal').toggleClass('d-none d-block');
+                }
+            });
+        }
+
+
+        function login() {
+            $("#frm-login").submit(function (e) {
+                if ($("#email").val() == '' && $("#password").val() == '') {
+                    $("#err_mail").show();
+                    $("#err_password").show();
+                    $("#err_mail").html('<div class="text-danger">Username chưa nhập</div>');
+                    $("#email").focus();
+                    $("#err_password").html('<div class="text-danger">Password chưa nhập</div>');
+                    return false;
+                }
+                else if ($("#email").val() == '') {
+                    $("#err_password").hide();
+                    $("#err_mail").show();
+                    $("#err_mail").html('<div class="text-danger">Username chưa nhập</div>');
+                    $("#email").focus();
+                    return false;
+                }
+                else if ($("#password").val() == '') {
+                    $("#err_mail").hide();
+                    $("#err_password").show();
+                    $("#err_password").html('<div class="text-danger">Password chưa nhập</div>');
+                    $("#err_password").focus();
+                    return false;
+                }
+                else {
+                    var form_data_login = {
+                        email: $("#email").val(),
+                        password: $("#password").val()
+                    };
+                    $.ajax({
+                        url: '/Home/Login',
+                        type: 'POST',
+                        async: true,
+                        data: form_data_login,
+                        success: function (msg_login) {
+                            if (msg_login == 'false') {
+                                $("#err_login").html('<div class="alert alert-danger">Tên hoặc mật khẩu không chính xác</div>');
+                                $("#password").focus();
+                                return false;
+                            }
+                            else {
+                                $("#login-here").hide();
+                                $("#err_login").html('<div class="alert alert-success"><strong>Đăng nhập thành công</strong><span> Hệ thống tự chuyển sau vài giây ...</span></div>');
+                                window.location.href = msg_login;
+
+                            }
+                        }
+                    })
+                    return false;
+                }
+            })
+        }
+    </script>
+</body> 
+</html>

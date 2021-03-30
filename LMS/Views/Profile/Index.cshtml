@@ -1,0 +1,80 @@
+﻿@model DAL.EF.C_USER
+@using LMS.Common;
+@using LMS.Models;
+@{
+    Session user = Session[CommonConstants.SESSION] as Session;
+    if (user.role == "ADMIN")
+    {
+        Layout = "~/Areas/Admin/Views/Shared/_BlankAdminLayout.cshtml";
+    }
+    else if (user.role == "TEACHER")
+    {
+        Layout = "~/Areas/Teacher/Views/Shared/_BlankTeacherLayout.cshtml";
+    }
+    else if (user.role == "STUDENT")
+    {
+        Layout = "~/Areas/Student/Views/Shared/_BlankStudentLayout.cshtml";
+    }
+
+}
+
+<div class="mr-4">
+    <div class="d-flex flex-row  align-items-center p-3">
+        <i class="far fa-user-circle fa-3x text-primary"></i>
+        <div class="pl-3">
+            <h3 class="text-primary m-0">@Model.LAST_NAME @Model.MIDDLE_NAME @Model.FIRST_NAME</h3>
+            <p style="color:#AAA" class="m-0">@Model.MAIL</p>
+        </div>
+    </div>
+    <div class="mt-2 p-4 position-relative" style="background-color:#EEE">
+
+        @if ((Session[CommonConstants.SESSION] as Session).id_user == Model.ID)
+        {
+            <div class="position-absolute" style="top:10px; right:15px"><a href="/Profile/EditProfile" class="text-primary">Chỉnh sửa thông tin</a></div>
+        }
+
+        <h5 class="mb-3">Chi tiết người dùng</h5>
+        <p class="m-0"><strong>Thư điện tử</strong></p>
+        <a href="@Model.MAIL" class="btn text-dark p-0 mb-3">@Model.MAIL</a>
+        <p class="m-0"><strong>Ngày sinh</strong></p>
+        @{ var dob = Convert.ToDateTime(Model.DoB);}
+        <p class="text-dark">@dob.Day/@dob.Month/@dob.Year</p>
+        <p class="m-0"><strong>Khoa quản lý</strong></p>
+        <p class="text-dark">@Model.FACULTY.NAME</p>
+        @if (Model.COURSEs.Count() != 0)
+        {
+            <p class="m-0"><strong>Chuyên ngành</strong></p>
+            <p class="text-dark">@Model.CLASS.MAJOR</p>
+            <p class="m-0"><strong>Lớp</strong></p>
+            <p class="text-dark">@Model.CLASS.ID</p>
+        }
+        <p class="m-0"><strong>Lần hoạt động cuối</strong></p>
+        <p class="text-dark">@Model.LASTVISITDATE</p>
+
+        <div class="mt-4">
+            @if (Model.COURSEs.Count != 0)
+            {
+                <h5 class="mb-3">Chi tiết các khóa học</h5>
+                <div class="d-flex flex-column justify-content-start">
+                    @foreach (var course in Model.COURSEs)
+                    {
+                        <div><a href="...?id=@course.ID" class="text-primary btn">@course.NAME</a></div>
+                    }
+                </div>
+            }
+            @if (Model.TEACHES.Count != 0)
+            {
+                <h5 class="mb-3">Chi tiết các lớp dạy</h5>
+                <div class="d-flex flex-column justify-content-start">
+                    @foreach (var t in Model.TEACHES)
+                    {
+                        <div>
+                            <a href="/Teacher/Subject/Index?id=@t.COURSE.ID" class="text-primary btn p-0">@t.COURSE.NAME</a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

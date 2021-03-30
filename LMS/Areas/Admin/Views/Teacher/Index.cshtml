@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_BlankAdminLayout.cshtml";
+}
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js" integrity="sha512-RdSPYh1WA6BF0RhpisYJVYkOyTzK4HwofJ3Q7ivt/jkpW6Vc8AurL1R+4AUcvn9IwEKAPm/fk7qFZW3OuiUDeg==" crossorigin="anonymous"></script>
+    <script src="~/Scripts/Admin/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js" integrity="sha512-frFP3ZxLshB4CErXkPVEXnd5ingvYYtYhE5qllGdZmcOlRKNEPbufyupfdSTNmoF5ICaQNO6SenXzOZvoGkiIA==" crossorigin="anonymous"></script>
+    <script src="~/Scripts/Admin/teacherController.js"></script>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Thông tin giảng viên</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="d-flex justify-content-between align-center mb-3">
+                <form enctype="multipart/form-data" method="post">
+                    <div class="d-flex justify-content-end align-center">
+                        <div class="dataTables_filter md-3"><input type="file" class="form-control" name="file" accept="application/vnd.ms-excel" required id="file" /></div>
+                        <button class="btn btn-primary" id="btnAddUser"><i class="fa fa-plus-square"></i></button>
+                    </div>
+                </form>
+                <div class="d-flex justify-content-end align-center">
+                    <div class="dataTables_filter mr-3"><input type="search" class="form-control" placeholder="Nhập thông tin tìm kiếm" aria-controls="dataTable" id="txtSearch"></div>
+                    <button class="btn btn-primary" id="btnSearch">Tìm kiếm</button>
+                </div>
+            </div>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td>Khoa</td>
+                        <td>Họ và tên</td>
+                        <td>Số điện thoại</td>
+                        <td>Email</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody id="tblData-Teacher">
+                </tbody>
+            </table>
+            <div id="pagination" class="pagination"></div>
+            <script id="data-Teacher" type="x-tmpl-mustache">
+                <tr>
+                    <input type="hidden" value="{{IDNAMEFACULTY}}"/>
+                    <input type="hidden" value="{{ID}}"/>
+                    <td>{{NAMEFACULTY}}</td>
+                    <td>{{FIRST_NAME}}</td>
+                    <td>{{PHONE_NO}}</td>
+                    <td>{{MAIL}}</td>
+                    <td>
+                        <button class="btn btn-primary btn-edit-Teacher" data-id="{{ID}}""><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger btn-delete-Teacher" data-id="{{ID}}"><i class="fa fa-trash-alt"></i></button>
+                        <button class="btn btn-info btn-info-Teacher" data-id="{{ID}}"><i class="fa fa-info"></i></button>
+                    </td>
+                </tr>
+            </script>
+        </div>
+    </div>
+</div>
+@RenderPage("popup_update_detail.cshtml")
+@RenderPage("popup_infoteacherSub.cshtml")

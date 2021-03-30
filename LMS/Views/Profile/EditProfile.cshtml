@@ -1,0 +1,108 @@
+﻿@model DAL.EF.C_USER
+@using LMS.Common;
+@using LMS.Models;
+@{
+    Session user = Session[CommonConstants.SESSION] as Session;
+    if (user.role == "ADMIN")
+    {
+        Layout = "~/Areas/Admin/Views/Shared/_BlankAdminLayout.cshtml";
+    }
+    else if (user.role == "TEACHER")
+    {
+        Layout = "~/Areas/Teacher/Views/Shared/_BlankTeacherLayout.cshtml";
+    }
+    else if (user.role == "STUDENT")
+    {
+        Layout = "~/Areas/Student/Views/Shared/_BlankStudentLayout.cshtml";
+    }
+
+}
+
+
+<div>
+    <div>
+        <h2>Chỉnh sửa thông tin cá nhân</h2>
+
+    </div>
+    <form action="#" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="lName">Họ</label>
+                <input type="text" class="form-control" id="lName" value="@Model.LAST_NAME" disabled>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="mName">Họ lót</label>
+                <input type="text" class="form-control" id="mName" value="@Model.MIDDLE_NAME" disabled>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="fName">Tên</label>
+                <input type="text" class="form-control" id="fName" value="@Model.FIRST_NAME" disabled>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="faculty">Khoa</label>
+                <input type="text" class="form-control" id="faculty" value="@Model.FACULTY.NAME" disabled>
+            </div>
+            @if (Model.ROLEs.FirstOrDefault(x => x.ROLE1 == "STUDENT") != null)
+            {
+                <div class="form-group col-md-3">
+                    <label for="major">Chuyên ngành</label>
+                    <input type="text" class="form-control" id="major" value="@Model.CLASS.MAJOR" disabled>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="class">Lớp</label>
+                    <input type="text" class="form-control" id="class" value="@Model.CLASS.ID" disabled>
+                </div>
+            }
+        </div>
+        <div class="form-group col-md-5">
+            <label for="DoB">Ngày sinh</label>
+            <input type="text" class="form-control" id="DoB" value="@Model.DoB.Value.Day / @Model.DoB.Value.Month / @Model.DoB.Value.Year" disabled>
+        </div>
+        <div class="form-group col-md-5">
+            <label for="phoneNo">Số điện thoại</label>
+            <input type="number" class="form-control" id="phoneNo" value="@Model.PHONE_NO">
+        </div>
+        <div class="form-group col-md-5">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="@Model.MAIL" value="@Model.MAIL">
+        </div>
+        <div class="d-flex justify-content-center"> <button type="submit" class="btn btn-primary m-3 pl-2 pr-2" id="editProfile">Sửa</button></div>
+
+    </form>
+</div>
+
+@section script_editProfile{
+
+    <script type="text/javascript">
+        $(document).ready(
+            updateInfo()
+        )
+
+        function updateInfo() {
+            $('#editProfile').on('click', function () {
+                $.ajax({
+                    url: '/Profile/UpdateInfo',
+                    type: 'post',
+                    dataType: 'json',
+                    data: { phone_no: $('#phoneNo').val(), email: $('#email').val() },
+                    async: true,
+                    success: function (response) {
+                        if (response.status) {
+                            alert('Thay đổi thành công !')
+                        }
+                        else {
+                            alert('Error')
+                        }
+                    }
+                });
+            });
+
+        }
+
+    </script>
+
+}
+
+

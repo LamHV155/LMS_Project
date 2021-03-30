@@ -1,0 +1,8 @@
+﻿@model List<DAL.EF.COURSE>
+
+@foreach (var sub in Model)
+{
+    <li>
+        <a href="~/Student/Subject/GetSubjectAssessments?course_id=@sub.ID">@sub.NAME</a>
+    </li>
+}

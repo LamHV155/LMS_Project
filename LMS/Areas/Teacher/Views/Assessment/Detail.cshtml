@@ -1,0 +1,58 @@
+﻿@model LMS.Areas.Teacher.Data.AssessmentDetailView
+@{
+    ViewBag.Title = "Detail";
+Layout = "~/Areas/Teacher/Views/Shared/_BlankTeacherLayout.cshtml";
+}
+
+
+
+<div class="mr-4">
+    <div style="background-color:#465c9e;" class="pl-3 pt-2 pb-2">
+        <h4 class="text-light mb-0" >@Model.course.NAME</h4>
+    </div>    
+    <h5 class="text-primary pl-2 pt-2">@Model.eVent.TITLE</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Điểm</th>
+                <th scope="col">Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var student in Model.course.C_USER)
+            {
+            <tr>
+                <td><a href="/Teacher/Assessment/StudentProcess?student_id=@student.ID&course_id=@Model.course.ID" class="text-primary" aria-label="Quá trình học tập">@student.LAST_NAME @student.MIDDLE_NAME @student.FIRST_NAME</a></td>
+
+                @if (Model.eVent.SUBMITs.Where(s => s.USER_ID == student.ID).ToList().Count == 1)
+                {
+                    <td class="text-primary">Đã nộp</td>
+                }
+                else
+                {
+                    <td style="color:#CCC">Chưa nộp</td>
+                }
+                @{ var score = Model.eVent.SUBMITs.Where(s => s.USER_ID == student.ID).Select(s => s.ASSESSMENT).Select(a => a.SCORE).FirstOrDefault();}
+                @if (score != null && score >= 50)
+                {
+                    <td class="text-success">@score</td>
+                }
+                else if (score != null && score < 50)
+                {
+                    <td class="text-danger">@score</td>
+                }
+                else
+                {
+                    <td style="color:#CCC">Chưa chấm</td>
+                }
+
+                <td><a href="/Teacher/Assessment/StudentDetail?studentID=@student.ID&eventID=@Model.eVent.ID" class="btn btn-default text-primary">Xem</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

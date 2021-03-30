@@ -1,0 +1,40 @@
+﻿@model List<DAL.StudentView.DeadlineView>
+@{ ViewBag.Title = "Index";
+    Layout = "~/Areas/Student/Views/Shared/_BlankStudentLayout.cshtml"; }
+
+<div class="pr-4">
+    <div class="card">
+        @{ if (Model == null)
+            {
+                <h4 class="text-light">Không có deadline !</h4>
+            }
+            else
+            {
+                <div class="p-2">
+                    <div class="border-bottom mr-4 ml-4 pt-2 pb-2  mb-2"><h5>Timeline</h5></div>
+                    @foreach (var item in Model)
+                    {
+                        <div class="list-group-item flex-column py-2 pl-2 pr-3 pt-2 pb-2 border-0">
+                            <div class="d-flex">
+                                <div class="d-flex align-self-top pt-1">
+                                    <img src="~/Content/Common/iconTask.svg" style="height:30px"/>
+                                </div>
+                                <div class="w-100 event-name-container text-truncate line-height-3 ml-3">
+                                    <h6 class="event-name text-truncate mb-0 text-primary">@item.eventTitle</h6>
+                                    <small class="text-muted text-truncate mb-0">"@item.courseName"</small>
+                                    <h6 class="mb-0 pt-2">
+                                        <a href="~/Student/Subject/Submit?event_id=@item.eventID" aria-label="Add submission" title="Add submission" class="list-group-item-action">Add submission</a>
+                                    </h6>
+                                </div>
+                                <small class="text-right text-nowrap ml-1">
+                                    @item.eventDeadline.GetValueOrDefault().GetDateTimeFormats()[118]
+                                </small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+
+</div>

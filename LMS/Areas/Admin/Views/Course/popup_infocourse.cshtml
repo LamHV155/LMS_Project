@@ -1,0 +1,51 @@
+﻿<div class="modal fade" id="InfoCourse">
+    <div class="modal-dialog" style="max-width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Thông tin học phần có trong môn học</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="form-group row" style="margin-left:0; margin-right:0">
+                                <label for="NameCourse" class="col-md-2 col-form-label">Học phần</label>
+                                <div class="col-md-4">
+                                    <input type="text" readonly class="form-control-plaintext" id="NameCourse" value="" style="padding:5px">
+                                </div>
+                                <label for="NameTeacher" class="col-md-2 col-form-label">Giảng viên:</label>
+                                <div class="col-md-4">
+                                    <input type="text" readonly class="form-control-plaintext" id="NameTeacher" value="" style="padding:5px">
+                                </div>
+                            </div>
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Sinh viên</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblData-InfoStudent">
+                                </tbody>
+                            </table>
+                            <div id="pagination" class="pagination"></div>
+                            <script id="data-InfoStudent" type="x-tmpl-mustache">
+                                <tr>
+                                    <td>{{ID}}</td>
+                                    <td>{{NAMESTUDENT}}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-delete-Student" data-id="{{ID}}"><i class="fa fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

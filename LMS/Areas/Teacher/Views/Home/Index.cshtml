@@ -1,0 +1,32 @@
+﻿@model List<DAL.EF.COURSE>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Teacher/Views/Shared/_BlankTeacherLayout.cshtml";
+}
+
+<div class="d-flex flex-column mr-4">
+    @if (Model == null)
+    {
+        <h3>Chưa có môn học nào !</h3>
+    }
+    else
+    {
+        <div class="mb-4"><h5>Danh sách môn học</h5></div>
+        foreach (var course in Model)
+        {
+            <a href="/Teacher/Subject/Index/@course.ID" class="btn">
+                <div class="card div-hover">
+                    <div class="card-body d-flex flex-row p-0">
+                        <img src="~/Content/Teacher/Image/course-banner.jpg" alt="subject" style="width:11rem; height:8rem" />
+                        <div class="align-self-center pl-3">
+                            <h5 class="card-title">@course.NAME</h5>
+                            <p class="card-text">@course.DESCRIPTION</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+    }
+</div>
+
+

@@ -1,0 +1,67 @@
+#header-home .-ul li.current-menu-parent,
+#header-home .nav-ul li.current-menu-item {
+  border-bottom: 2px solid #0a426e;
+}
+#header-home .hd-right {
+  margin-top: 10px;
+}
+.pintag {
+  margin-top: 75px;
+}
+.login-bg {
+    position: absolute;
+    background-image: url("/Content/Common/bannerlms.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 100px 0px;
+    right: 0;
+    width: calc(100% - 10px);
+}
+
+.information-content .col-dt {
+  color: #1269b0;
+}
+
+.information {
+  background-image: url("/Content/Common/bannerlms.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 100px 0px;
+}
+.information-content .col-dt .hd {
+  font-size: 40px;
+}
+#header-home .logo img {
+  width: auto;
+  height: 50px;
+}
+#header-home {
+  padding: 10px 10px;
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  top: 0px;
+  background-color: white;
+  box-shadow: #00000085 0px 0px 5px;
+}
+#footer .ft-info .hd,
+#footer .ft-info p:not(:last-child) {
+  margin-bottom: 5px;
+}
+#footer {
+  padding: 30px 0;
+}
+
+.login-box {
+  padding: 30px 20px;
+}
+
+.p-label {
+  color: #262e65;
+}
+#typed-js {
+  color: #e50055;
+}
+

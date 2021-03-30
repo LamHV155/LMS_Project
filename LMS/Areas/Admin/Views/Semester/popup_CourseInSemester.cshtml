@@ -1,0 +1,48 @@
+﻿<div class="modal fade" id="InfoCourseInSemester">
+    <div class="modal-dialog" style="max-width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title" style="text-align: center;"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Thông tin học phần có trong học kỳ</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Học phần</th>
+                                        <th>Mô tả học phần</th>
+                                        <th>Giáo viên giảng dạy</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblData-CourseInSemester">
+                                </tbody>
+                            </table>
+                            <div id="pagination" class="pagination"></div>
+                            <script id="data-CourseInSemester" type="x-tmpl-mustache">
+                                <tr>
+                                     <input type="hidden" value="{{ID}}"/>
+                                    <td>{{NAME}}</td>
+                                    <td>{{DESCRIPTION}}</td>
+                                    <td>{{NAMETEACHER}}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-delete-Course" data-id="{{ID}}"><i class="fa fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

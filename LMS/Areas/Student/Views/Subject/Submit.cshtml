@@ -1,0 +1,104 @@
+﻿@model DAL.EF.EVENT
+@using LMS.Common
+@using LMS.Models
+@{
+    ViewBag.Title = "Submit";
+    Layout = "~/Areas/Student/Views/Shared/_BlankStudentLayout.cshtml";
+    string user_id = (Session[CommonConstants.SESSION] as Session).id_user;
+}
+<div class="pr-4">
+    <div style="background-color:#465c9e;" class="pl-5 pt-2 pb-2 mb-3">
+        <h4 class="text-light mb-0">@Model.TOPIC.COURSE.NAME</h4>
+    </div>
+    @if (Model.SUBMITs.Count == 0 || Model.SUBMITs.Where(x => x.USER_ID == user_id).FirstOrDefault() == null)
+    {
+        <div class="p-2">
+            <div class="mt-4" id="event" data-id="@Model.ID">
+                <form action="/" method="post" class="form-group pl-5 pr-5 pb-2 mb-0 mt-2" id="form">
+                    <h4 class="text-primary mb-3">@Model.TITLE</h4>
+                    <div class="mb-2">Mô tả : @Model.DESCRIPTION</div>
+                    <label for="file" class="pt-2 m-0" style="font-size:1rem">Tài liệu</label>
+                    <input type="file" class="form-control" name="file" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                        text/plain, application/pdf, image/*" required />
+                    <div class="d-flex justify-content-end p-3">
+                        <button type="button" class="btn btn-outline-primary mr-5" id="btnAdd">Thêm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            <div></div>
+            <div>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Trạng thái</th>
+                            <td><p class="text-success mb-0">Đã nộp</p></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Điểm</th>
+                            <td>@Model.SUBMITs.ToList()[0].ASSESSMENT.SCORE </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Đánh giá</th>
+                            <td>@Model.SUBMITs.ToList()[0].ASSESSMENT.COMMENT</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Deadline</th>
+                            <td>@Model.DEADLINE.GetValueOrDefault().GetDateTimeFormats()[118]</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nộp lúc</th>
+                            <td>@Model.SUBMITs.ToList()[0].TIME.GetValueOrDefault().GetDateTimeFormats()[118]</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">File nộp</th>
+                            <td><a href="@Model.SUBMITs.ToList()[0].LINK " class="text-primary" aria-label="Click để tải về">file</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section script_submit{
+
+    <script type="text/javascript">
+        $(document).ready(postFile())
+
+
+        function postFile() {
+
+            $("#btnAdd").on('click', function () {
+                let formData = new FormData($("#form").get(0))
+                formData.append("Event_ID", $("#event").data("id"))
+                formData.append("Submit_ID", generateID("smit"))
+                $.ajax({
+                    type: 'POST',
+                    url: '/Student/Subject/SubmitFile',
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    async: false,
+                    success: function (msg) {
+                        if (msg.status == true) {
+                            linkFile = msg.file.link;
+                            filename = msg.file.filename;
+                            alert('Thêm thành công !')
+                        } else {
+                            alert('Đã xảy ra lỗi !')
+                        }
+                    }
+                });
+            })
+        }
+
+    </script>
+
+}

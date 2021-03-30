@@ -1,0 +1,48 @@
+﻿@model DAL.StudentView.CourseDetailsView
+@{
+    ViewBag.Title = "GetTopicStudent";
+    Layout = "~/Areas/Student/Views/Shared/_BlankStudentLayout.cshtml";
+}
+<div class="position-relative pr-4">
+    <div style="height:12rem; background-size:cover; background:url('/Content/Common/course-banner.jpg') no-repeat center;" class="mb-5 pr-4">
+    </div>
+    <h2 class="position-absolute text-light pl-5 pr-2" style="top:2rem; background-color:#465c9e;">@Model.course.NAME</h2>
+    <div>@Model.course.DESCRIPTION</div>
+    @if (Model.topics.Count == 0)
+    {
+        <h4 style="color:#aaa">Không có topic để hiển thị !</h4>
+    }
+    else
+    {
+        <div class="card p-4">
+            @foreach (var item in Model.topics)
+            {
+                <div class="pb-5 border-bottom border-primary">
+                    <div class="pb-2 border-bottom mb-3 ml-2 mr-2">
+                        <h5>@item.TITLE</h5>
+                        <p>@item.DESCRIPTION</p>
+                    </div>
+                    <div class="pr-2 pl-2">
+                        @foreach (var doc in item.DOCUMENTs)
+                        {
+                            <div class="d-flex">
+                                <div><img src="~/Content/Common/file.svg" style="height:20px" /></div>
+                                <div class="pl-2"> <a href="@doc.LINK" target="_blank" aria-label="Add submission">@doc.TITLE</a></div>
+                            </div>
+                        }
+                        @foreach (var ev in item.EVENTs)
+                        {
+                            <div class="d-flex">
+                                <div><img src="~/Content/Common/iconTask.svg" style="height:20px" /></div>
+                                <div class="pl-2"><a href="~/Student/Subject/Submit?event_id=@ev.ID" aria-label="Đến trang nộp bài">@ev.TITLE</a></div>
+                            </div>
+                        }
+                    </div>
+                </div>       
+            }
+        </div>
+    }
+</div>
+
+
+

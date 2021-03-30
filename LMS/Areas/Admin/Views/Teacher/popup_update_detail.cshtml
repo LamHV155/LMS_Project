@@ -1,0 +1,96 @@
+﻿<div class="modal fade" id="InfoUpdateTeacher">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="frmSaveDataTeacher">
+                    <div class="form-horizontal">
+                        <input type="hidden" class="form-control" id="ID" />
+
+                        <div class="form-group">
+                            <label for="first_name">First Name:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="first_name" name="first_name" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_nametea">Last Name:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="last_name"  name="last_name"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="middle_name">Middle Name:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="middle_name" name="middle_name"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone_no">Số điện thoại:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="phone_no" name="phone_no"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sex">Giới tính:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="sex" name="sex"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dob">Ngày sinh:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="dob" name="dob"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mail">Email:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="mail"  name="mail"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Mật khẩu:</label>
+                            <div class="col-md-10">
+                                <input type="password" class="form-control" id="password" disabled name="password"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastvisited">Last visited:</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="lastvisited" />
+                            </div>
+                        </div>
+
+                        <input type="hidden" class="form-control" id="IDsub" />
+
+                        <div class="form-group">
+                            <label for="facultyname">Khoa:</label>
+                            <div class="col-md-10">
+                                <select id="facultyname" class="dropdown-header" name="facultyname">
+                                </select>
+                                <input type="hidden" class="form-control" id="IDfacl" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnCancel-InfoTeacher" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success" id="btnSave-InfoTeacher">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
